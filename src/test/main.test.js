@@ -2,7 +2,7 @@ describe('Main', function() {
 
   // inject the HTML fixture for the tests
   beforeEach(function() {
-    var fixture = '<div id="name">Michael</div>';
+    var fixture = '<div id="fixture">Michael</div>';
 
     document.body.insertAdjacentHTML(
       'afterbegin', 
@@ -11,10 +11,13 @@ describe('Main', function() {
 
   // remove the html fixture from the DOM
   afterEach(function() {
-    document.body.removeChild(document.getElementById('name'));
+    document.body.removeChild(document.getElementById('fixture'));
   });
   it('should Michael', function() {
-    expect(document.getElementById('name').innerHTML).toBe('Michael');
+    expect(document.getElementById('fixture').innerHTML).toBe('Michael');
+  });
+  it('should display all users',function(){
+    mainObj.init();
   });
 
 });
