@@ -1,0 +1,21 @@
+body {
+    direction: ltr;
+}
+
+.flex-container {
+    display: -webkit-flex;
+    display: flex;
+    background-color: lightgrey;
+    justify-content : space-around;
+    border:1px solid;
+    height: 40px;
+    align-items: center;
+}
+.flex-container.childDiv{
+    background-color: white;
+}
+.item {
+  order: 1;
+  text-align: center;
+  width: 100px;
+}

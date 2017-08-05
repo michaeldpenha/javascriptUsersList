@@ -13,6 +13,7 @@
     "karma-cli": "~1.0.1",
     "karma-fixture": "^0.2.6",
     "karma-jasmine": "~1.1.0",
+    "karma-jasmine-ajax": "^0.1.13",
     "webpack-dev-server": "^1.8.0"
   }
 }
