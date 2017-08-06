@@ -10,18 +10,19 @@
 <body>
   <div class="flex-container">
     <div class="item-header">
-      <label>Active Users : </label>
+      <label>Users : </label>
       <select id="active">
         <option value="">All</option>
         <option value="true">Active</option>
       </select>
     </div>
     <div class="item-header">
-      <div id="gender">
-        <input type="radio" name="gender" value="" checked> All
-        <input type="radio" name="gender" value="male"> Men</option>
-        <input type="radio" name="gender" value="female"> Women</option>
-      </div>
+      <label>Gender : </label>
+      <select id="gender">
+        <option value="">All</option>
+        <option value="male">Men</option>
+        <option value="female">Women</option>
+      </select>
     </div>
     <div class="item-header">
       <label>Last Login Users : </label>
@@ -33,6 +34,15 @@
     </div>
   </div>
   <div id="table"></div>
+  <div id="childTableDiv"></div>
+  <div id="overlay" class="white_content">
+    <div>ID : <span id="idName"></span></div>
+    <div>First Name : <span id="firstName"></span></div>
+    <div>Last Name : <span id="lastName"></span></div>
+    <div>Active : <span id="activeId"></span></div>
+    <button id="closeBtn">Close</button>
+  </div>
+  <div id="fade" class="black_overlay"></div>
   <script type="text/javascript" src="src/js/main.js"></script>
 </body>
 </html>

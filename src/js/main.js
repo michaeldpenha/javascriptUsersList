@@ -15,6 +15,10 @@ var mainObj = (function() {
 	function init(){
 		loadUsersList();
 		registerEvents();
+		initalizeChildTableHeight();
+	}
+	function initalizeChildTableHeight(){
+		document.getElementById('childTableDiv').style.height = window.outerHeight-170 + 'px';
 	}
 	function setSortingValues(key,value){
 		sortingObject[key] = value;
@@ -50,8 +54,8 @@ var mainObj = (function() {
 		createTableHeaderDivs();
 		createTableChildDivs(users);
 	}
-	function addDivToTable(childDiv){
-		var dvTable = document.getElementById("table");
+	function addDivToTable(childDiv,divEl){
+		var dvTable = document.getElementById(divEl);
     	dvTable.appendChild(childDiv);
 	}
 	function createTableHeaderDivs(){
@@ -88,41 +92,67 @@ var mainObj = (function() {
 	function formatDisplayName(val){
 		return val ? val.split('_').join(' ').toUpperCase() : val;
 	}
+	function divAttribute(el,key,value){
+		el.setAttribute(key,value);
+	}
+	function getDivAttribute(el,key){
+		return el.getAttribute(key);
+	}
 	function createDivs(componentArry,cls,item){
 		var mainDiv = document.createElement('div');
-			mainDiv.setAttribute('class','flex-container '+cls);
+		var addToDiv = "table";
+		divAttribute(mainDiv,'class','flex-container '+cls);
 		componentArry.forEach(function(item,index,arr){
 			var divElement = document.createElement("div");
 			divElement.innerHTML = item.name;
-			divElement.setAttribute('class','item');
+			divAttribute(divElement,'class','item');
 			mainDiv.appendChild(divElement);
 		});
 		if(item){
-			mainDiv.setAttribute('dataValue', JSON.stringify(item));
-			mainDiv.setAttribute('id',item.id);
+			var color = item.favorites && item.favorites.color ? item.favorites.color : '#ffffff';
+			divAttribute(mainDiv,'favouriteColor',color);
+			divAttribute(mainDiv,'firstName', item.first_name);
+			divAttribute(mainDiv,'lastName',item.last_name);
+			divAttribute(mainDiv,'active',item.active);
+			divAttribute(mainDiv,'id',item.id);
+			addToDiv = "childTableDiv";
 		}
-		addDivToTable(mainDiv);
+		addDivToTable(mainDiv,addToDiv);
 	}
 	function fetchColOrder (){
-		var orderOfCol = ['id','first_name','last_name','username','active','last_login'];
+		var orderOfCol = ['first_name','last_name','username','active','last_login'];
 		return orderOfCol;
 	}
 	function registerEvents(){
-		document.getElementById('table') ? document.getElementById('table').addEventListener('click', changeTableBgColor) : '';
-		document.getElementById('active') ? document.getElementById('active').addEventListener('change',changeUsersStatus) : '';
-		document.getElementById('last_login') ? document.getElementById('last_login').addEventListener('change',changeUsersStatus) : '';
-		document.getElementById('gender') ? document.getElementById('gender').addEventListener('click',changeUsersStatus): '';
+		document.getElementById('childTableDiv') ? document.getElementById('childTableDiv').addEventListener('click', changeTableBgColor) : '';
+		document.getElementById('active') ? document.getElementById('active').addEventListener('change',applyFilterOptions) : '';
+		document.getElementById('last_login') ? document.getElementById('last_login').addEventListener('change',applyFilterOptions) : '';
+		document.getElementById('gender') ? document.getElementById('gender').addEventListener('change',applyFilterOptions): '';
+		document.getElementById('closeBtn') ? document.getElementById('closeBtn').addEventListener('click',closeModalDialog): '';
+	}
+	function closeModalDialog(){
+		overlay('none');
 	}
 	function changeTableBgColor(event) {
-		var targetEl = event.target.getAttribute('datavalue') ? event.target : event.target.parentElement.getAttribute('datavalue') ? event.target.parentElement : '';
-		var bgColor = "#ffffff";
+		var targetEl = getDivAttribute(event.target,'favouriteColor') ? event.target : getDivAttribute(event.target.parentElement,'favouriteColor') ? event.target.parentElement : '';
 		if(event.target && targetEl){
-			var data = JSON.parse(targetEl.getAttribute('datavalue'));
-			bgColor = data.favorites && data.favorites.color ? data.favorites.color : '#ffffff';
+			openModalDialog(targetEl);
 		}
-		document.getElementById('table').style.backgroundColor = bgColor;
 	}
-	function changeUsersStatus(event){
+	function overlay(val){
+		document.getElementById('overlay').style.display=val;
+		document.getElementById('fade').style.display=val;
+	}
+	function openModalDialog(el){
+		document.getElementById('idName').innerHTML = getDivAttribute(el,'id');
+		document.getElementById('firstName').innerHTML = getDivAttribute(el,'firstName');
+		document.getElementById('lastName').innerHTML=getDivAttribute(el,'lastName');
+		document.getElementById('activeId').innerHTML = getDivAttribute(el,'active');
+		document.getElementById('overlay').style.display='block';
+		document.getElementsByTagName('body')[0].style.backgroundColor = getDivAttribute(el,'favouriteColor');
+		overlay('block');
+	}
+	function applyFilterOptions(event){
 		setSortingValues(event.currentTarget.id,event.target.value);
 		var sortedArry = filterUsersArray();
 		createTableChildDivs(sortedArry);
@@ -149,7 +179,7 @@ var mainObj = (function() {
 	function toCheckWhetherGenderMatchesRec(genderRec,selectedGender){
 		var booleanVal = false;
 		genderRec.forEach(function(val,index,arry){
-			if(val.toLowerCase() === selectedGender.toLowerCase()){
+			if(val && selectedGender && val.toLowerCase() === selectedGender.toLowerCase()){
 				booleanVal = true;
 				return true;
 			}
