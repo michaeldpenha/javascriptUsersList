@@ -109,15 +109,18 @@ var mainObj = (function() {
 			mainDiv.appendChild(divElement);
 		});
 		if(item){
-			var color = item.favorites && item.favorites.color ? item.favorites.color : '#ffffff';
+			addAttributesToDiv(mainDiv,item);
+			addToDiv = "childTableDiv";
+		}
+		addDivToTable(mainDiv,addToDiv);
+	}
+	function addAttributesToDiv(mainDiv,item){
+		var color = item.favorites && item.favorites.color ? item.favorites.color : '#ffffff';
 			divAttribute(mainDiv,'favouriteColor',color);
 			divAttribute(mainDiv,'firstName', item.first_name);
 			divAttribute(mainDiv,'lastName',item.last_name);
 			divAttribute(mainDiv,'active',item.active);
 			divAttribute(mainDiv,'id',item.id);
-			addToDiv = "childTableDiv";
-		}
-		addDivToTable(mainDiv,addToDiv);
 	}
 	function fetchColOrder (){
 		var orderOfCol = ['first_name','last_name','username','active','last_login'];
