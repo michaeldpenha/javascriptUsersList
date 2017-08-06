@@ -18,7 +18,7 @@ var mainObj = (function() {
 		initalizeChildTableHeight();
 	}
 	function initalizeChildTableHeight(){
-		document.getElementById('childTableDiv').style.height = window.outerHeight-170 + 'px';
+		document.getElementById('childTableDiv') ? document.getElementById('childTableDiv').style.height = window.outerHeight-170 + 'px' : '';
 	}
 	function setSortingValues(key,value){
 		sortingObject[key] = value;
@@ -64,7 +64,7 @@ var mainObj = (function() {
 	}
 	function createTableChildDivs(usersArry){
 		removeAllChildElements('childDiv');
-		usersArry.forEach(function(item,index,arr){
+		usersArry.forEach(function(item,index,arr){s
 			var childArray = orderDataBasedOnCols(item);
 			createDivs(childArray,'childDiv',item);	
 		});
