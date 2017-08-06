@@ -2,7 +2,7 @@ describe('Main', function() {
 
   // inject the HTML fixture for the tests
   beforeEach(function() {
-    var fixture = '<div id="fixture">Michael</div>';
+    var fixture = '<div id ="fixture"></div>';
     document.body.insertAdjacentHTML('afterbegin',fixture);
     mainObj.setUsersArray([
       {"id":1,"username":"ccarpenter0","active":true,"password":"8d83c3eb0b9cb5cc4f78fb26c17a993144c5436976538c69457959d649cf768a","first_name":"Catherine","last_name":null,"last_login":"11/5/2016","email":null,"avatar":"https://robohash.org/inquisquamnon.png?size=50x50&set=set1","gender":["Female"],"favorites":{"book-isbn":"379444935-5","color":null,"drugs":["Amitriptyline Hydrochloride","CLINDAMYCIN PALMITATE HYDROCHLORIDE","Mephyton"]},"coordinates":{"lat":"49.68352","lng":"83.01674"}},
@@ -19,22 +19,71 @@ describe('Main', function() {
   afterEach(function() {
     document.body.removeChild(document.getElementById('fixture'));
   });
-  it('should Michael', function() {
-    expect(document.getElementById('fixture').innerHTML).toBe('Michael');
-  });
   it('should fetch all users',function(){
     expect(mainObj.getUsersArray().length).toEqual(10);
   });
+  it('should check sorting of users',function(){
+      expect(mainObj.getUsersArray()[0]['first_name']).toEqual('Catherine');
+  });
   it('should fetch active users',function(){
-
+      mainObj.setSortingValues('active',true);
+      var users = mainObj.filterUsersArray();
+      expect(users.length).toEqual(6);
   });
   it('should fetch active Men users',function(){
-
+    mainObj.setSortingValues('last_login','');
+    mainObj.setSortingValues('active',true);
+    mainObj.setSortingValues('gender','male');
+    var users = mainObj.filterUsersArray();
+     expect(users.length).toEqual(5);
   });
   it('should fetch active Women users',function(){
-
+    mainObj.setSortingValues('last_login','');
+    mainObj.setSortingValues('active',true);
+    mainObj.setSortingValues('gender','female');
+    var users = mainObj.filterUsersArray();
+     expect(users.length).toEqual(5);
   });
-  it('should fetch Last Login users of the previous year',function(){
-
+  it('should fetch Last Login users of the previous year with active is equal to true',function(){
+    mainObj.setSortingValues('last_login','2016');
+    mainObj.setSortingValues('active',true);
+     mainObj.setSortingValues('gender','');
+    var users = mainObj.filterUsersArray();
+    expect(users.length).toEqual(5);
+  });
+  it('should fetch Last Login users of the previous year with all users',function(){
+    mainObj.setSortingValues('last_login','2016');
+    mainObj.setSortingValues('active','');
+     mainObj.setSortingValues('gender','');
+    var users = mainObj.filterUsersArray();
+    expect(users.length).toEqual(8);
+  });
+  it('should fetch Last Login users of the previous year with active Women users',function(){
+    mainObj.setSortingValues('last_login','2016');
+    mainObj.setSortingValues('active',true);
+    mainObj.setSortingValues('gender','female');
+    var users = mainObj.filterUsersArray();
+     expect(users.length).toEqual(4);
+  });
+  it('should fetch Last Login users of the previous year with active Men users',function(){
+    mainObj.setSortingValues('last_login','2016');
+    mainObj.setSortingValues('active',true);
+    mainObj.setSortingValues('gender','male');
+    var users = mainObj.filterUsersArray();
+     expect(users.length).toEqual(4);
+  });
+  it('should fetch Last Login users of the previous year with all Women users',function(){
+    mainObj.setSortingValues('last_login','2016');
+    mainObj.setSortingValues('active','');
+    mainObj.setSortingValues('gender','female');
+    var users = mainObj.filterUsersArray();
+     expect(users.length).toEqual(5);
+  });
+  it('should fetch Last Login users of the previous year with all Men users',function(){
+    mainObj.setSortingValues('last_login','2016');
+    mainObj.setSortingValues('active','');
+    mainObj.setSortingValues('gender','male');
+    var users = mainObj.filterUsersArray();
+     expect(users.length).toEqual(6);
   });
 });

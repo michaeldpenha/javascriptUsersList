@@ -5,17 +5,22 @@ body {
 .flex-container {
     display: -webkit-flex;
     display: flex;
-    background-color: lightgrey;
     justify-content : space-around;
     border:1px solid;
     height: 40px;
     align-items: center;
 }
 .flex-container.childDiv{
-    background-color: white;
+    background-color: transparent;
+}
+.flex-container.headerDiv{
+    background-color: lightgrey;
 }
 .item {
   order: 1;
   text-align: center;
   width: 100px;
+}
+.item-header {
+  order: 1;
 }
